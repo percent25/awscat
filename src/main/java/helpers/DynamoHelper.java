@@ -80,7 +80,7 @@ public class DynamoHelper {
   // https://aws.amazon.com/blogs/developer/aws-sdk-for-java-2-0-developer-preview/
   public static Map<String, AttributeValue> render(JsonElement dynamoDbJson) { //###TODO RENAME TO PARSE
     try {
-      Map<String, AttributeValue> item = new LinkedHashMap<String, AttributeValue>();
+      Map<String, AttributeValue> item = new LinkedHashMap<>();
       for (Entry<String, JsonElement> entry : dynamoDbJson.getAsJsonObject().entrySet()) {
         String key = entry.getKey();
         JsonElement value = entry.getValue();
@@ -92,7 +92,7 @@ public class DynamoHelper {
     }
   }
 
-  public static AttributeValue inferValue(JsonElement value) {
+  private static AttributeValue inferValue(JsonElement value) {
     if (value.isJsonArray()) {
       List<AttributeValue> l = new ArrayList<>();
       for (JsonElement e : value.getAsJsonArray())

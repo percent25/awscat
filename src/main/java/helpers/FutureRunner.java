@@ -8,6 +8,7 @@ import com.google.common.util.concurrent.*;
 import com.spotify.futures.*;
 
 import io.netty.util.HashedWheelTimer;
+import io.netty.util.Timeout;
 import io.netty.util.Timer;
 
 /**
@@ -160,9 +161,13 @@ public class FutureRunner {
   // convenience
   // Thread.sleep(millis);
   protected ListenableFuture<?> sleep(long millis) {
+    // ### TODO hook up future.cancel to timer handle cancel
+    // ### TODO hook up future.cancel to timer handle cancel
+    // ### TODO hook up future.cancel to timer handle cancel
     return new AbstractFuture<Void>() {
+      Timeout timeout;
       {
-        timer.newTimeout(timer -> {
+        timeout = timer.newTimeout(timer -> {
           set(null);
         }, millis, TimeUnit.MILLISECONDS);
       }

@@ -85,7 +85,7 @@ public class AwsHelper {
   }
 
   /**
-   * build
+   * buildAsync
    * 
    * <p>
    * configure aws endpoint and aws profile
