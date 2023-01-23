@@ -7,8 +7,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonStreamParser;
+import com.google.gson.ToNumberPolicy;
 
 public class ObjectHelper {
 
@@ -37,17 +39,20 @@ public class ObjectHelper {
   }
 
   public static void main(String... args) {
+    var gson = new GsonBuilder()
+        .setObjectToNumberStrategy(ToNumberPolicy.LAZILY_PARSED_NUMBER)
+        .create();
     // Ugh: round-trip json number thru Object: 1 -> 1.0
-    Object object = new Gson().fromJson("1", Object.class);
+    Object object = gson.fromJson("1", Object.class);
     System.out.println(object); // 1.0
     System.out.println(object.getClass()); // java.lang.Double
-    System.out.println(new Gson().toJson(object)); // 1.0
+    System.out.println(gson.toJson(object)); // 1.0
 
     // Ugh: round-trip json number thru Number: 1 -> {"value":"1"}
-    Number number = new Gson().fromJson("1", Number.class);
+    Number number = gson.fromJson("1", Number.class);
     System.out.println(number); // 1
     System.out.println(number.getClass()); // LazilyParsedNumber
-    System.out.println(new Gson().toJson(number)); // {"value":"1"}
+    System.out.println(gson.toJson(number)); // {"value":"1"}
 
     System.out.println(toObject(new JsonStreamParser("1").next()));
     System.out.println(toObject(new JsonStreamParser("[1,2,3]").next()));
