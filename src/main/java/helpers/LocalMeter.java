@@ -40,10 +40,7 @@ public class LocalMeter {
    */
   public Number sum(long windowSeconds) {
     double sum = 0;
-    long now = now();
-    long fromKey = now - windowSeconds;
-    long toKey = now;
-    for (double value : values.subMap(fromKey, true, toKey, false).values())
+    for (double value : values.tailMap(now() - windowSeconds, true).values())
       sum += value;
     return sum;
   }
