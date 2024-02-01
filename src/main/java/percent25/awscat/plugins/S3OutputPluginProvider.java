@@ -52,8 +52,7 @@ public class S3OutputPluginProvider implements OutputPluginProvider {
     S3AsyncClient client = AwsHelper.buildAsync(S3AsyncClient.builder(), options);
 
     // Note- transport is thread safe
-    ConcatenatedJsonWriter.Transport transport =
-      new ConcatenatedJsonWriterTransportAwsS3Export(client, bucket, exportPrefix);
+    var transport = new ConcatenatedJsonWriterTransportAwsS3Export(client, bucket, exportPrefix);
     
     // Note- ConcatenatedJsonWriter is not thread safe
     // therefore return a new instance per supplier invocation
