@@ -39,10 +39,6 @@ public class FutureRunner {
     return doFinally();
   }
 
-  public boolean isRunning() {
-    return !vf.isDone();
-  }
-
   /**
    * run
    *
