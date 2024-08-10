@@ -49,7 +49,7 @@ public class SystemOutPluginProvider implements OutputPluginProvider {
 
   // out.txt,append=true
   class SystemOutOptions {
-    boolean append;
+    public boolean append;
     public String toString() {
       return new Gson().toJson(this);
     }
