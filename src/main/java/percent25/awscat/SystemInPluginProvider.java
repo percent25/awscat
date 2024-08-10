@@ -22,7 +22,13 @@ class SystemInPlugin implements InputPlugin {
 
   private Function<Iterable<JsonElement>, ListenableFuture<?>> listener;
 
+  //###TODO hard to cycle stdin !!
+  //###TODO hard to cycle stdin !!
+  //###TODO hard to cycle stdin !!
   public SystemInPlugin(String filename, boolean cycle) {
+    //###TODO hard to cycle stdin !!
+    //###TODO hard to cycle stdin !!
+    //###TODO hard to cycle stdin !!
     debug("ctor", filename, cycle);
     this.filename = filename;
     this.cycle = cycle;
