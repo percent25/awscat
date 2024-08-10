@@ -100,6 +100,15 @@ public class DynamoOutputPluginProvider implements OutputPluginProvider {
     List<KeySchemaElement> keySchema = describeTableResponseSupplier.get().table().keySchema();
 
     options.c = options.c > 0 ? options.c : Runtime.getRuntime().availableProcessors();
+          // // https://aws.amazon.com/blogs/developer/rate-limited-scans-in-amazon-dynamodb/
+          // int c = Runtime.getRuntime().availableProcessors();
+          // if (options.c > 0)
+          //   c = options.c;
+          // else {
+          //   if (options.rcu > 0)
+          //     c = (options.rcu + 127) / 128;
+          // }
+          //###TODO DO THIS LIKE DynamoInputPluginProvider??
 
     Semaphore sem = new Semaphore(options.c);
 
