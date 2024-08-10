@@ -9,7 +9,6 @@ import java.util.Map.*;
 
 import com.google.common.collect.*;
 import com.google.gson.*;
-import com.google.gson.internal.LazilyParsedNumber;
 
 import percent25.awscat.*;
 
@@ -18,6 +17,7 @@ import org.graalvm.polyglot.Value;
 import org.graalvm.polyglot.proxy.ProxyArray;
 import org.junit.jupiter.api.*;
 
+// @Disabled
 // https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#expressions
 public class ExpressionsJsTest {
 
@@ -114,6 +114,7 @@ public class ExpressionsJsTest {
     // assertThat(eval(e, "e=randomString(24)").getAsString()).hasSize(32);
 
     assertThat(output("{}", "e=[1,2,3]")).isEqualTo(jsonElement("[1,2,3]"));
+    assertThat(output("{}", "e=[[1,2,3],[1,2,3],[1,2,3]]")).isEqualTo(jsonElement("[[1,2,3],[1,2,3],[1,2,3]]"));
 
     assertThat(output("{}", "e.id={}")).isEqualTo(jsonElement("{id:{}}"));
     assertThat(output("{}", "e.id={s:'foo'}")).isEqualTo(jsonElement("{id:{s:'foo'}}"));
@@ -166,6 +167,7 @@ public class ExpressionsJsTest {
   public void nullToBoolTest() {
 
     assertThat(filter("{}", "e?.test")).isEqualTo(false);
+    assertThat(filter("{test:true}", "e?.test")).isEqualTo(true);
     assertThat(filter("{test:'true'}", "e?.test")).isEqualTo(true);
 
     // assertThat(bool(json("{test:'false'}"), "e?.test")).isEqualTo(false);
