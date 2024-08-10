@@ -1,10 +1,11 @@
 package percent25.awscat;
 
-import java.lang.reflect.Type;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
-import com.google.common.base.*;
-import com.google.gson.*;
+import com.google.common.base.Splitter;
+import com.google.gson.Gson;
 
 // arn:aws:dynamo:us-east-1:102938475610:table/MyTable,c=1,delete=true,wcu=5
 public class Addresses {
@@ -29,7 +30,7 @@ public class Addresses {
     }
 
     // arn:aws:dynamo:us-east-1:102938475610:table/MyTable,c=1,delete=true,wcu=5
-    public static <T> T options(String address, Type typeOfT) {
+    public static <T> T options(String address, Class<T> classOfT) {
         Map<String, String> options = new HashMap<>();
         Iterator<String> iter = Splitter.on(",").trimResults().split(address).iterator();
         iter.next(); // skip address base
@@ -41,7 +42,7 @@ public class Addresses {
                 value = keyAndValue.next();
             options.put(key, value);
         }
-        return new Gson().fromJson(new Gson().toJson(options), typeOfT);
+        return new Gson().fromJson(new Gson().toJson(options), classOfT);
     }
 
 }
