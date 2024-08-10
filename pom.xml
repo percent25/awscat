@@ -15,7 +15,7 @@
 
 	<properties>
 		<revision>0.0.1-SNAPSHOT</revision>
-		<java.version>11</java.version>
+		<java.version>17</java.version>
 		<graalvm.version>22.3.0</graalvm.version>
 		<!-- https://aws.amazon.com/blogs/developer/category/developer-tools/aws-sdk-for-java/ -->
 		<aws.java.sdk.version>2.19.0</aws.java.sdk.version>
