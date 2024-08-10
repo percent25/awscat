@@ -40,8 +40,8 @@ public class ExpressionsJs {
       String randomString = BaseEncoding.base64Url().encode(bytes).substring(0);
       return randomString.substring(0, Math.min(len, randomString.length()));
     }
-    public Object inferDynamoDbJson(Object jsonObject) {
-      JsonElement jsonElement = toJsonElement(jsonObject);
+    public Object inferDynamoDbJson(Object value) {
+      JsonElement jsonElement = toJsonElement(context.asValue(value));
       JsonElement dynamoDbJson = DynamoHelper.inferDynamoDbJson(jsonElement);
       return fromJsonElement(dynamoDbJson);
     }
@@ -80,105 +80,88 @@ public class ExpressionsJs {
   public boolean eval(String js) {
     Value value = context.eval("js", js);
     // coerce to truthy/falsey
-    return context.eval("js", "(function(s){return !!s})").execute(value).asBoolean();
+    return context.eval("js", "(function(value){return !!value})").execute(value).asBoolean();
   }
 
-  private JsonElement toJsonElement(Object object) {
-    Value value = Value.asValue(object);
+  private JsonElement toJsonElement(Value value) {
     if (value.hasArrayElements())
-      return new Gson().toJsonTree(value.as(new TypeLiteral<List<Object>>(){}));
-    return new Gson().toJsonTree(value.as(Object.class));
-
+      return new Gson().toJsonTree(value.as(List.class));
+    return new Gson().toJsonTree(value.as(Object.class)); // unbox
   }
 
   private Object fromJsonElement(JsonElement jsonElement) {
 
-    // @see ProxyArray.fromArray
     if (jsonElement.isJsonArray()) {
-      JsonArray array = jsonElement.getAsJsonArray();
-      return new ProxyArray() {
+      JsonArray jsonArray = jsonElement.getAsJsonArray();
+      return new ProxyArray() { // @see ProxyArray.fromList
         @Override
         public Object get(long index) {
-            return fromJsonElement(array.get((int) index));
+            return fromJsonElement(jsonArray.get((int) index)); // recursive
         }
         @Override
         public void set(long index, Value value) {
-            //###TODO use toJsonElement here??
-            //###TODO use toJsonElement here??
-            //###TODO use toJsonElement here??
-            array.set((int) index, new Gson().toJsonTree(value.as(Object.class)));
-            //###TODO use toJsonElement here??
-            //###TODO use toJsonElement here??
-            //###TODO use toJsonElement here??
+            jsonArray.set((int) index, toJsonElement(value));
           }
         @Override
         public boolean remove(long index) {
-            return array.remove((int) index) != null;
+            return jsonArray.remove((int) index) != null;
         }
         @Override
         public long getSize() {
-          return array.size();
+          return jsonArray.size();
         }
       };
     }
 
-    // @see ProxyObject.fromMap
     if (jsonElement.isJsonObject()) {
-      JsonObject object = jsonElement.getAsJsonObject();
-      return new ProxyObject() {
+      var jsonObject = jsonElement.getAsJsonObject();
+      return new ProxyObject() { // @see ProxyObject.fromMap
         @Override
         public Object getMember(String key) {
-          return fromJsonElement(object.get(key));
+          return fromJsonElement(jsonObject.get(key)); // recursive
         }
 
         @Override
         public Object getMemberKeys() {
-            return new ProxyArray() {
-                private final Object[] keys = object.keySet().toArray();
+          var keys = jsonObject.keySet().toArray();
+          return new ProxyArray() {
 
-                @Override
-                public Object get(long index) {
-                    if (index < 0 || index > Integer.MAX_VALUE) {
-                        throw new ArrayIndexOutOfBoundsException();
-                    }
-                    return keys[(int) index];
-                }
+            @Override
+            public Object get(long index) {
+              return keys[(int) index];
+            }
 
-                @Override
-                public void set(long index, Value value) {
-                    throw new UnsupportedOperationException("set");
-                }
+            @Override
+            public void set(long index, Value value) {
+              throw new UnsupportedOperationException("set");
+            }
 
-                @Override
-                public long getSize() {
-                    return keys.length;
-                }
-            };
+            @Override
+            public long getSize() {
+              return keys.length;
+            }
+          };
         }
 
         @Override
         public boolean hasMember(String key) {
-            return object.has(key);
+            return jsonObject.has(key);
         }
 
         @Override
         public void putMember(String key, Value value) {
-            //###TODO use toJsonElement here??
-            //###TODO use toJsonElement here??
-            //###TODO use toJsonElement here??
-            object.add(key, new Gson().toJsonTree(value.as(Object.class)));
-            //###TODO use toJsonElement here??
-            //###TODO use toJsonElement here??
-            //###TODO use toJsonElement here??
+            jsonObject.add(key, toJsonElement(value));
           }
 
         @Override
         public boolean removeMember(String key) {
-          return object.remove(key) != null;
+          return jsonObject.remove(key) != null;
         }
       };
     }
 
+    // do not return Gson LazilyParsedNumber
+    // because Value.isNumber is false for Gson LazilyParsedNumber
     if (jsonElement.isJsonPrimitive()) {
       if (jsonElement.getAsJsonPrimitive().isNumber()) {
         try {
