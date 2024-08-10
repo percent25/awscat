@@ -30,7 +30,7 @@ public abstract class AbstractPluginProvider {
   public String help() {
     String options = "";
     for (Field field : classOfOptions.getFields())
-      options += String.format(",%s", field.getName());
+      options += String.format(",%s=", field.getName());
     return String.format("%s[%s]", base, options);
   }
 
