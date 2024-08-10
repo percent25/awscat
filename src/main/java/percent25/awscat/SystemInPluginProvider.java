@@ -95,6 +95,9 @@ public class SystemInPluginProvider extends AbstractPluginProvider implements In
   // e.g., in.json,cycle
   class SystemInOptions {
     public boolean cycle;
+    public String toString() {
+      return new Gson().toJson(this);
+    }
   }
 
   public SystemInPluginProvider() {
