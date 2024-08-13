@@ -7,7 +7,6 @@ import java.time.*;
 import java.util.*;
 import java.util.Map.*;
 
-import com.google.common.collect.*;
 import com.google.gson.*;
 
 import percent25.awscat.*;
@@ -27,7 +26,7 @@ public class ExpressionsJsTest {
   // private final Expressions expressions = new Expressions(jsonElement);
   
   // the set of falsey values is static.. here are the falsey values
-  private final Set<String> allFalsey = ImmutableSet.of( //
+  private final Set<String> allFalsey = Set.of( //
       "null", // json null
       "false", // json primitive bool
       "0", "-0", "0.0", "-0.0", // json primitive number
@@ -35,7 +34,7 @@ public class ExpressionsJsTest {
       // "''", "'false'", "'0'", "'-0'", "'0.0'", "'-0.0'"); // json primitive string      
 
   // if it is not falsey then it is truthy.. here are some truthy values
-  private final Set<String> someTruthy = ImmutableSet.of( //
+  private final Set<String> someTruthy = Set.of( //
       "true", // json primitive bool
       "1", "-1", "1.0", "-1.0", // json primitive number
       "'true'", // json primitive string
@@ -126,14 +125,14 @@ public class ExpressionsJsTest {
   @Test
   public void truthyTest() {
 
-    // var truthy = ImmutableSet.of( //
+    // var truthy = Set.of( //
     //     "true", // json primitive bool
     //     "1", "-1", "1.0", "-1.0", // json primitive number
     //     "'true'", "'not-empty'", // json primitive string
     //     "[]", "{}");
 
     for (String e : someTruthy) {
-      for (Entry<String, String> entry : ImmutableMap.of("%s", "e", "[%s]", "e[0]", "{e:%s}", "e.e").entrySet()) {
+      for (Entry<String, String> entry : Map.of("%s", "e", "[%s]", "e[0]", "{e:%s}", "e.e").entrySet()) {
         String fmt = entry.getKey();
         String str = entry.getValue();
         assertThat(filter(String.format(fmt, e), str)).as("jsonElement=%s", e).isEqualTo(true);
@@ -148,13 +147,13 @@ public class ExpressionsJsTest {
   @Test
   public void falseyTest() {
 
-    // var falsey = ImmutableSet.of("null", // json null
+    // var falsey = Set.of("null", // json null
     //     "false", // json primitive bool
     //     "0", "-0", "0.0", "-0.0", // json primitive number
     //     "'false'", "''", "'0'", "'-0'", "'0.0'", "'-0.0'"); // json primitive string
 
     for (String e : allFalsey) {
-      for (Entry<String, String> entry : ImmutableMap.of("%s", "e", "[%s]", "e[0]", "{e:%s}", "e.e").entrySet()) {
+      for (Entry<String, String> entry : Map.of("%s", "e", "[%s]", "e[0]", "{e:%s}", "e.e").entrySet()) {
         String fmt = entry.getKey();
         String str = entry.getValue();
         assertThat(filter(String.format(fmt, e), str)).as("jsonElement=%s fmt=%s str=%s", e, fmt, str).isEqualTo(false);
