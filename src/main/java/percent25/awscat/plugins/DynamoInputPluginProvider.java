@@ -1,11 +1,11 @@
 package percent25.awscat.plugins;
 
+import java.util.Set;
 import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
 import com.google.common.base.*;
-import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
 import com.google.gson.*;
 
@@ -80,7 +80,7 @@ public class DynamoInputPluginProvider extends AbstractPluginProvider implements
 
   @Override
   public boolean canActivate(String address) {
-    return ImmutableSet.of("dynamo", "dynamodb").contains(Addresses.base(address).split(":")[0]);
+    return Set.of("dynamo", "dynamodb").contains(Addresses.base(address).split(":")[0]);
   }
 
   @Override

@@ -5,7 +5,6 @@ import java.util.concurrent.*;
 import java.util.function.Supplier;
 
 import com.google.common.base.*;
-import com.google.common.collect.*;
 import com.google.common.util.concurrent.*;
 import com.google.gson.*;
 
@@ -84,7 +83,7 @@ public class DynamoOutputPluginProvider implements OutputPluginProvider {
 
   @Override
   public boolean canActivate(String address) {
-    return ImmutableSet.of("dynamo", "dynamodb").contains(address.split(":")[0]);
+    return Set.of("dynamo", "dynamodb").contains(address.split(":")[0]);
   }
 
   @Override
