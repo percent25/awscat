@@ -192,7 +192,7 @@ public class DynamoWriter {
 
             BatchWriteItemRequest batchWriteItemRequest = BatchWriteItemRequest.builder()
                 //
-                .requestItems(ImmutableMap.of(tableName, writeRequests.values()))
+                .requestItems(Map.of(tableName, writeRequests.values()))
                 //
                 .returnConsumedCapacity(ReturnConsumedCapacity.TOTAL)
                 //
