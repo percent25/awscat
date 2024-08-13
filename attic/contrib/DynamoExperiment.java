@@ -10,7 +10,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicLong;
 
 import com.google.common.base.Joiner;
-import com.google.common.collect.ImmutableMap;
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
 import com.google.common.util.concurrent.RateLimiter;
@@ -74,7 +73,7 @@ public class DynamoExperiment {
 
           BatchWriteItemRequest batchWriteItemRequest = BatchWriteItemRequest.builder()
           //
-          .requestItems(ImmutableMap.of(tableName, requestItems))
+          .requestItems(Map.of(tableName, requestItems))
           //
           .returnConsumedCapacity(ReturnConsumedCapacity.TOTAL)
           //
