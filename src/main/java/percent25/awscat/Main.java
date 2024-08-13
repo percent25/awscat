@@ -148,11 +148,11 @@ public class Main implements ApplicationRunner {
     	help = true;
     if (options.version)
     	help = true;
-    if (ImmutableSet.of().equals(Set.of(args.getNonOptionArgs())))
+    if (Set.of().equals(Set.of(args.getNonOptionArgs())))
     	help = true;
-    if (ImmutableSet.of("-h").equals(Set.of(args.getNonOptionArgs())))
+    if (Set.of("-h").equals(Set.of(args.getNonOptionArgs())))
     	help = true;
-    if (ImmutableSet.of("-v").equals(Set.of(args.getNonOptionArgs())))
+    if (Set.of("-v").equals(Set.of(args.getNonOptionArgs())))
     	help = true;
 
     if (help) {
