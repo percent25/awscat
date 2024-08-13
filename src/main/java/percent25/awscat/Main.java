@@ -111,24 +111,7 @@ public class Main implements ApplicationRunner {
     debug("ctor");
     this.projectVersion = projectVersion;
     this.inputPluginProviders.addAll(inputPluginProviders);
-    
-    //###TODO NOT NEEDED
-    //###TODO NOT NEEDED
-    //###TODO NOT NEEDED
-    this.inputPluginProviders.add(new SystemInPluginProvider()); // ensure last
-    //###TODO NOT NEEDED
-    //###TODO NOT NEEDED
-    //###TODO NOT NEEDED
-
     this.outputPluginProviders.addAll(outputPluginProviders);
-
-    //###TODO NOT NEEDED
-    //###TODO NOT NEEDED
-    //###TODO NOT NEEDED
-    this.outputPluginProviders.add(new SystemOutPluginProvider()); // ensure last
-    //###TODO NOT NEEDED
-    //###TODO NOT NEEDED
-    //###TODO NOT NEEDED
   }
 
   /**
