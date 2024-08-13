@@ -42,7 +42,7 @@ class SystemOutPlugin implements OutputPlugin {
 }
 
 // @Service
-public class SystemOutPluginProvider implements OutputPluginProvider {
+public class SystemOutPluginProvider extends AbstractPluginProvider implements OutputPluginProvider {
 
   @VisibleForTesting
   public static PrintStream stdout = System.out;
@@ -55,28 +55,20 @@ public class SystemOutPluginProvider implements OutputPluginProvider {
     }
   }
 
-  private String filename;
-  private SystemOutOptions options;
-
-  public String toString() {
-    return MoreObjects.toStringHelper(this).add("filename", filename).add("options", options).toString();
-  }
-
-  @Override
-  public String help() {
-      return "<filename>[,append]";
+  public SystemOutPluginProvider() {
+    super("<filename>", SystemOutOptions.class);
   }
 
   @Override
   public boolean canActivate(String address) {
-    filename = Addresses.base(address);
-    options = Addresses.options(address, SystemOutOptions.class);
     return true;
   }
 
   @Override
   public Supplier<OutputPlugin> activate(String address) throws Exception {
-    PrintStream out = "-".equals(filename) ? stdout : new PrintStream(new BufferedOutputStream(new FileOutputStream(filename, options.append)));
+    var filename = Addresses.base(address);
+    var options = Addresses.options(address, SystemOutOptions.class);
+    var out = "-".equals(filename) ? stdout : new PrintStream(new BufferedOutputStream(new FileOutputStream(filename, options.append))); //###TODO leaked resource
     return ()->new SystemOutPlugin(out);
   }
 
