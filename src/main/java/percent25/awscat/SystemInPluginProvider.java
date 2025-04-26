@@ -15,7 +15,13 @@ import helpers.*;
 class SystemInPlugin implements InputPlugin {
 
   @VisibleForTesting
+  //###TODO use OutputCaptureExtension?
+  //###TODO use OutputCaptureExtension?
+  //###TODO use OutputCaptureExtension?
   public static InputStream stdin = System.in;
+  //###TODO use OutputCaptureExtension?
+  //###TODO use OutputCaptureExtension?
+  //###TODO use OutputCaptureExtension?
 
   private final String filename;
   private final boolean cycle;

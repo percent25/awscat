@@ -45,7 +45,13 @@ class SystemOutPlugin implements OutputPlugin {
 public class SystemOutPluginProvider extends AbstractPluginProvider implements OutputPluginProvider {
 
   @VisibleForTesting
+  //###TODO use OutputCaptureExtension?
+  //###TODO use OutputCaptureExtension?
+  //###TODO use OutputCaptureExtension?
   public static PrintStream stdout = System.out;
+  //###TODO use OutputCaptureExtension?
+  //###TODO use OutputCaptureExtension?
+  //###TODO use OutputCaptureExtension?
 
   // out.txt,append=true
   class SystemOutOptions {
