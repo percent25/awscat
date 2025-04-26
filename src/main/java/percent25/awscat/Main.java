@@ -160,23 +160,23 @@ public class Main implements ApplicationRunner {
         stderr(indentString, pluginProvider.help());
       }
 
-      return;
+      return; //###TODO FIXME
     }
 
     // input plugin
-    String source = "-";
+    var source = "-";
     if (args.getNonOptionArgs().size()>0)
       source = args.getNonOptionArgs().get(0);
     InputPluginProvider inputPluginProvider = resolveInputPlugin(source);
-    stderr("inputPlugin", inputPluginProvider.name(), inputPluginProvider);
     InputPlugin inputPlugin = inputPluginProvider.activate(source);
+    stderr("inputPlugin", inputPlugin);
     
     // output plugin
-    String target = "-";
+    var target = "-";
     if (args.getNonOptionArgs().size()>1)
       target = args.getNonOptionArgs().get(1);
     OutputPluginProvider outputPluginProvider = resolveOutputPlugin(target);
-    stderr("outputPlugin", outputPluginProvider.name(), outputPluginProvider);
+    // stderr("outputPlugin", outputPluginProvider.name(), outputPluginProvider);
     Supplier<OutputPlugin> outputPluginSupplier = outputPluginProvider.activate(target);
 
     // ----------------------------------------------------------------------
@@ -191,16 +191,16 @@ public class Main implements ApplicationRunner {
         Working work = new Working(in, success, failure);
         {
           run(()->{
-            ExpressionsJs expressionsJs = new ExpressionsJs(); // throws
-            OutputPlugin outputPlugin = outputPluginSupplier.get(); // throws
-            for (JsonElement jsonElement : jsonElements) {
+            var expressionsJs = new ExpressionsJs(); // throws
+            var outputPlugin = outputPluginSupplier.get(); // throws
+            for (var jsonElement : jsonElements) {
 
 
 
               //###TODO "in" is wrong here
               //###TODO "in" is wrong here
               //###TODO "in" is wrong here
-              long preCount = in.getAndIncrement();
+              var preCount = in.getAndIncrement();
               if (preCount < effectiveLimit) {
                 //###TODO "in" is wrong here
                 //###TODO "in" is wrong here
@@ -209,11 +209,11 @@ public class Main implements ApplicationRunner {
 
 
                 run(() -> {
-                  boolean filter = true;
+                  var passedFilter = true;
                   expressionsJs.e(jsonElement); //###TODO .deepCopy
-                  for (String js : options.js)
-                    filter = filter && expressionsJs.eval(js);
-                  if (filter) {
+                  for (var js : options.js)
+                    passedFilter = passedFilter && expressionsJs.eval(js);
+                  if (passedFilter) {
                     run(() -> {
                       return outputPlugin.write(expressionsJs.e());
                     }, result -> {

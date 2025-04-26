@@ -32,7 +32,7 @@ public class AwsTopicOutputPluginProvider implements OutputPluginProvider{
 
     @Override
     public String help() {
-        return "<topic-arn>";
+        return "arn:aws:sns:region:account_ID:topic_name"; // https://docs.aws.amazon.com/IAM/latest/UserGuide/reference-arns.html
     }
 
     @Override

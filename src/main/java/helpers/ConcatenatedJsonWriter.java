@@ -45,9 +45,6 @@ public class ConcatenatedJsonWriter {
         }
     }
 
-    // abstract write transport
-    private final Transport transport;
-
     // current partition
     private ByteArrayOutputStream partitionBytes = new ByteArrayOutputStream();
 
@@ -55,6 +52,9 @@ public class ConcatenatedJsonWriter {
     private final Multimap<ByteArrayOutputStream, VoidFuture> partitionFutures = LinkedListMultimap.create();
     
     private final List<ListenableFuture<?>> flushFutures = Lists.newArrayList();
+
+    // abstract write transport
+    private final Transport transport;
 
     /**
      * ctor
